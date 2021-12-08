@@ -1,34 +1,62 @@
 class Chronometer {
   constructor() {
-    // ... your code goes here
+    this.currentTime = 0;
+    this.intervalId = null;
+    this.milliSecondCurrentTime = 0;
+    this.milliSecondIntervalId = null;
+    this.milliSecondsCounter = 0;
   }
 
   start(callback) {
-    // ... your code goes here
+
+    // Initialize a setInterval asyn func and assign it to the intervalid variable defined above
+    this.intervalId = setInterval(() => {
+      // If the start method is provided a callback argument, execute it
+      if (typeof callback === 'function') callback();
+      // Increment the currentTime variable by 1 at each iteration
+      this.currentTime ++;
+    }, 1000);
+
+    // Initialize a second setInterval asyn func and assign it to the milliSecondIntervalId variable defined above
+    this.milliSecondIntervalId = setInterval(() => {
+      if (typeof callback === 'function') callback();
+      this.milliSecondCurrentTime ++; 
+      if (this.milliSecondCurrentTime = 99) this.milliSecondCurrentTime = 0;
+    }, 10)
   }
 
   getMinutes() {
-    // ... your code goes here
+    return Math.floor(this.currentTime / 60);
+    // Florian's trick ----> return this.currentTime / 60 | 0 ----> return the floored result of the division
   }
 
   getSeconds() {
-    // ... your code goes here
+    return this.currentTime % 60;
+  }
+
+  getMilliSeconds() {
+    return this.milliSecondCurrentTime;
   }
 
   computeTwoDigitNumber(value) {
-    // ... your code goes here
+    // If the number has only one digit (0 < number < 10), return its value as string appeneded with a 0, else return the unchanged value as a string
+    return value < 10 ? `0${value}` : `${value}`;
+    // Another way of doing it ---> return String(value).length === 2 ? String(value) : "0" + value;
   }
 
   stop() {
-    // ... your code goes here
+    // Stop the setInterval asyn function that increments our currentTime variable every second
+    clearInterval(this.intervalId);
   }
 
   reset() {
-    // ... your code goes here
+    // Set the currentTime variable's value to 0
+    this.currentTime = 0;
+    this.milliSecondCurrentTime = 0;
   }
 
   split() {
-    // ... your code goes here
+    return `${this.computeTwoDigitNumber(this.getMinutes())}:${this.computeTwoDigitNumber(this.getSeconds())}:${this.computeTwoDigitNumber(this.getMilliSeconds())}`;
   }
 }
 
