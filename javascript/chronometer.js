@@ -11,18 +11,20 @@ class Chronometer {
 
     // Initialize a setInterval asyn func and assign it to the intervalid variable defined above
     this.intervalId = setInterval(() => {
-      // If the start method is provided a callback argument, execute it
-      if (typeof callback === 'function') callback();
       // Increment the currentTime variable by 1 at each iteration
       this.currentTime ++;
-    }, 1000);
+      // If the start method is provided a callback argument, execute it
+      if (typeof callback === 'function') callback();
+     }, 1000);
 
     // Initialize a second setInterval asyn func and assign it to the milliSecondIntervalId variable defined above
     this.milliSecondIntervalId = setInterval(() => {
       if (typeof callback === 'function') callback();
       this.milliSecondCurrentTime ++; 
-      if (this.milliSecondCurrentTime = 99) this.milliSecondCurrentTime = 0;
+      if (this.milliSecondCurrentTime === 100) this.milliSecondCurrentTime = 0;
     }, 10)
+
+    // Another way of doing it is having one setInterval, with a delay of 10, and when the millisecondcounter reaches 1000; increment the second counter
   }
 
   getMinutes() {
@@ -47,6 +49,7 @@ class Chronometer {
   stop() {
     // Stop the setInterval asyn function that increments our currentTime variable every second
     clearInterval(this.intervalId);
+    clearInterval(this.milliSecondIntervalId);
   }
 
   reset() {
